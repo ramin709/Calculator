@@ -7,6 +7,8 @@ const Container = styled.div`
     background: #323232;
     flex-direction: column;
     min-height: 100vh;
+    align-items: center;
+    justify-content: center;
 `;
 
 function App() {
