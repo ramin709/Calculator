@@ -19,8 +19,8 @@ export type CalcInput = { type: InputType.Number, value: number } | { type: Inpu
 
 export type CalcOutput = { displayValue: number }
 
-const getOperation = (inputs: CalcInput[]): Operation[] => {
-    const builder: OperationBuilder = inputs.reduce<OperationBuilder>((builder, input): OperationBuilder => {
+const getOperationBuilder = (inputs: CalcInput[]): OperationBuilder => {
+    return inputs.reduce<OperationBuilder>((builder, input): OperationBuilder => {
         switch (input.type) {
             case InputType.Number:
                 const previous = builder.working?.value || 0;
@@ -36,17 +36,29 @@ const getOperation = (inputs: CalcInput[]): Operation[] => {
                 }
         }
     }, { operations: [], working: { operator: operatorType.Add, value: 0 } })
-
-    return builder.operations;
 }
 
 const getState = (inputs: Array<CalcInput>): CalcOutput => {
-    return { displayValue: 0 }
+    const builder = getOperationBuilder(inputs);
+    const operations: Operation[]= builder.operations;
+    const lastOperation = operations ? operations[operations.length - 1] : null;
+
+    if(!lastOperation) return {displayValue : 0}
+
+    switch (lastOperation.operator) {
+        case operatorType.Equal:
+            const total = operations.reduce((sum , operation) => sum + operation.value , 0);
+            return {displayValue : total}
+    
+        default:
+            return {displayValue: builder.working.value}
+    }
+  
 }
 
 const Calc = {
     getState,
-    getOperation
+    getOperationBuilder
 }
 
 export default Calc
