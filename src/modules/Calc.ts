@@ -38,16 +38,33 @@ const getOperationBuilder = (inputs: CalcInput[]): OperationBuilder => {
     }, { operations: [], working: { operator: operatorType.Add, value: 0 } })
 }
 
+const getTotal = (operations: Operation[]): number => {
+    const total:number = operations.reduce<number>((sum:number , operation: Operation) => {
+        switch (operation.operator) {
+            case operatorType.Add:
+                return sum + operation.value;
+            case operatorType.Sub:
+                return sum - operation.value;
+            case operatorType.Equal:
+                return sum;
+            default: 
+                return sum;
+        }
+    } , 0);
+
+    return total;
+}
+
 const getState = (inputs: Array<CalcInput>): CalcOutput => {
     const builder = getOperationBuilder(inputs);
     const operations: Operation[]= builder.operations;
     const lastOperation = operations ? operations[operations.length - 1] : null;
 
-    if(!lastOperation) return {displayValue : 0}
+    if(!lastOperation) return {displayValue : builder.working.value}
 
     switch (lastOperation.operator) {
         case operatorType.Equal:
-            const total = operations.reduce((sum , operation) => sum + operation.value , 0);
+            const total = getTotal(operations);
             return {displayValue : total}
     
         default:

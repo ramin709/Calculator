@@ -5,9 +5,9 @@ export enum ButtonType{
   Number , Operator
 }
 
-type ButtonProps = {
+type ButtonProps = React.HTMLProps<HTMLButtonElement> & {
     label: string;
-    type?: ButtonType;
+    buttonType?: ButtonType;
     position?: [x: number, y: number];
     width?: number;
     height?: number;
@@ -15,13 +15,14 @@ type ButtonProps = {
 
 const StyledButton = styled.button`
     background-color: #646462;
+    cursor: pointer;
     border: none;
     border-radius: 8px;
     color: #fff;
     font-size: 1.5rem;
 `
 
-const Button: React.FC<ButtonProps> = ({type ,label , position , width , height}) => {
+const Button: React.FC<ButtonProps> = ({buttonType ,label , position , width , height , onClick}) => {
   
   const style: CSSProperties = {}
 
@@ -38,14 +39,14 @@ const Button: React.FC<ButtonProps> = ({type ,label , position , width , height}
     style.gridRowEnd = `span ${height}`
   }
 
-  if(type === ButtonType.Number){
+  if(buttonType === ButtonType.Number){
     style.backgroundColor = "#f4821f";
     style.color= "#000"
   }
 
 
   return (
-    <StyledButton style={style}>
+    <StyledButton onClick={onClick} style={style}>
         {label}
     </StyledButton>
   )

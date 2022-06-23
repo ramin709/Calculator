@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import styled from 'styled-components'
 import Button from '../Button/Button';
 import {ButtonType} from '../Button/Button'
+import {CalcInput , InputType , operatorType} from '../../modules/Calc'
+import Calc from '../../modules/Calc'
 const Container = styled.div`
     display: flex;
     align-items: center;
@@ -27,25 +30,42 @@ const Display = styled.div`
 `
 
 const Calculator:React.FC = () => {
+
+
+  const [Inputs, setInputs] = useState<Array<CalcInput>>([]);
+  const state = Calc.getState(Inputs);
+  
+  const append = (value: CalcInput) => {
+    setInputs(prev => [...prev , value])
+  }
+
+  const handleNumericInput = (input: number) => {
+    append({type: InputType.Number , value: input})
+  }
+
+  const handleOperationInput = (operator: operatorType) => {
+    append({type: InputType.Operation , operator})
+  }
+
   return (
     <Container>
         <Grid>
-          <Display>42</Display>
+          <Display>{state.displayValue}</Display>
           <Button label="AC" position={[1 , 0]} width={2}/>
           <Button label="Oops" position={[1 , 2]} width={2}/>
-          <Button label="+" position={[2 , 3]}/>
-          <Button label="-" position={[3 , 3]}/>
-          <Button label="=" position={[4 , 3]} height={2}/>
-          <Button label="0" position={[5 , 0]} width={3} type={ButtonType.Number}/>
-          <Button label="9" position={[2,2]} type={ButtonType.Number}/>
-          <Button label="8" position={[2,1]} type={ButtonType.Number}/>
-          <Button label="7" position={[2,0]} type={ButtonType.Number}/>
-          <Button label="6" position={[3,2]} type={ButtonType.Number}/>
-          <Button label="5" position={[3,1]} type={ButtonType.Number}/>
-          <Button label="4" position={[3,0]} type={ButtonType.Number}/>
-          <Button label="3" position={[4,2]} type={ButtonType.Number}/>
-          <Button label="2" position={[4,1]} type={ButtonType.Number}/>
-          <Button label="1" position={[4,0]} type={ButtonType.Number}/>
+          <Button label="+" position={[2 , 3]} onClick={() => handleOperationInput(operatorType.Add)}/>
+          <Button label="-" position={[3 , 3]} onClick={() => handleOperationInput(operatorType.Sub)}/>
+          <Button label="=" position={[4 , 3]} onClick={() => handleOperationInput(operatorType.Equal)} height={2}/>
+          <Button label="0" position={[5 , 0]} width={3} buttonType={ButtonType.Number}/>
+          <Button label="9" position={[2,2]} buttonType={ButtonType.Number} onClick = {() => handleNumericInput(9)}/>
+          <Button label="8" position={[2,1]} buttonType={ButtonType.Number} onClick = {() => handleNumericInput(8)}/>
+          <Button label="7" position={[2,0]} buttonType={ButtonType.Number} onClick = {() => handleNumericInput(7)}/>
+          <Button label="6" position={[3,2]} buttonType={ButtonType.Number} onClick = {() => handleNumericInput(6)}/>
+          <Button label="5" position={[3,1]} buttonType={ButtonType.Number} onClick = {() => handleNumericInput(5)}/>
+          <Button label="4" position={[3,0]} buttonType={ButtonType.Number} onClick = {() => handleNumericInput(4)}/>
+          <Button label="3" position={[4,2]} buttonType={ButtonType.Number} onClick = {() => handleNumericInput(3)}/>
+          <Button label="2" position={[4,1]} buttonType={ButtonType.Number} onClick = {() => handleNumericInput(2)}/>
+          <Button label="1" position={[4,0]} buttonType={ButtonType.Number} onClick = {() => handleNumericInput(1)}/>
         </Grid>
     </Container>
   )

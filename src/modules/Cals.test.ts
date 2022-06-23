@@ -34,6 +34,16 @@ test('derive final state without equal sign', () => {
     expect(result.displayValue).toEqual(3);
 })
 
+test('derive first state without equal sign', () => {
+    const inputs: CalcInput[] = [
+        { type: InputType.Number, value: 1 },
+    ]
+
+    const result = Calc.getState(inputs)
+
+    expect(result.displayValue).toEqual(1);
+})
+
 test('derive final state when inputs are empty', () => {
     const inputs: CalcInput[] = []
 
@@ -54,19 +64,20 @@ test('derive final state', () => {
     const result = Calc.getState(inputs)
 
     expect(result.displayValue).toEqual(15);
-}) 
+})
 
-
-/* test('derive state', () => {
+test('derive final state with add or sub', () => {
     const inputs: CalcInput[] = [
         { type: InputType.Number, value: 1 },
         { type: InputType.Number, value: 2 },
         { type: InputType.Operation, operator: operatorType.Add },
         { type: InputType.Number, value: 3 },
+        { type: InputType.Operation, operator: operatorType.Sub },
+        { type: InputType.Number, value: 5 },
         { type: InputType.Operation, operator: operatorType.Equal }
     ]
 
     const result = Calc.getState(inputs)
 
-    expect(result.displayValue).toEqual(15);
-}) */
+    expect(result.displayValue).toEqual(10);
+}) 
