@@ -47,12 +47,20 @@ const Calculator:React.FC = () => {
     append({type: InputType.Operation , operator})
   }
 
+  const handleAc = () => {
+    setInputs([]);
+  }
+
+  const handleOopsButton = () => {
+    setInputs(prev => prev.slice(0 , -1));
+  }
+
   return (
     <Container>
         <Grid>
           <Display>{state.displayValue}</Display>
-          <Button label="AC" position={[1 , 0]} width={2}/>
-          <Button label="Oops" position={[1 , 2]} width={2}/>
+          <Button label="AC" position={[1 , 0]} width={2} onClick={handleAc}/>
+          <Button label="Oops" position={[1 , 2]} width={2} onClick={handleOopsButton}/>
           <Button label="+" position={[2 , 3]} onClick={() => handleOperationInput(operatorType.Add)}/>
           <Button label="-" position={[3 , 3]} onClick={() => handleOperationInput(operatorType.Sub)}/>
           <Button label="=" position={[4 , 3]} onClick={() => handleOperationInput(operatorType.Equal)} height={2}/>
